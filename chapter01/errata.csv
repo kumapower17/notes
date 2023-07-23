@@ -1,0 +1,3 @@
+location                 ,description
+p12 l-7 low_open.c的17行 ,应该为sizeof(buf)-1
+
