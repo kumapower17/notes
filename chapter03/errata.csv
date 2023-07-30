@@ -1,0 +1,3 @@
+location                 ,description
+p44 l12 Linux中long类型占用4个字节 ,通常long在64位机上是8字节
+p46 typo occured occureded,occurred
