@@ -1,2 +1,5 @@
 /opclient
 /opserver
+/demo/finwait/finwait_client
+/demo/finwait/finwait_server
+/demo/finwait/finwait_server_linger
