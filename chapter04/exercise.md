@@ -19,7 +19,10 @@
 5. 什么时候创建连接请求队列？它有何作用？与 `accept` 有什么关系？
 
 `listen`
+
 请求队列用来缓存三次握手之后但是还没被 `accept` 取出的连接
+
+https://www.alibabacloud.com/blog/tcp-syn-queue-and-accept-queue-overflow-explained_599203
 
 6. 客户端中为何不需要调用 `bind` 函数分配地址？如果不调用 `bind` 函数，那何时、如何向套接字分配IP地址和端口号？
 
