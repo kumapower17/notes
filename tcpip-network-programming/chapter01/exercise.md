@@ -90,7 +90,7 @@ struct _IO_FILE {
 
 对于直接I/O读：磁盘 --> 内核缓冲区 --> 应用程序内存
 
->>> The goal of the buffering provided by the standard I/O library is to use the minimum number of read and write calls.
+> The goal of the buffering provided by the standard I/O library is to use the minimum number of read and write calls.
 
 7. 参考本书给出的示例low_open.c和low_read.c，分别利用底层文件I/O和ANSI标准I/O编写文件复制程序。可任意指定复制程序的使用方法。
 

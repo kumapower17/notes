@@ -20,6 +20,10 @@ e. 与面向连接的套接字不同，不存在连接的概念
 
 a. 演唱会现场直播的多媒体数据 （UDP）
 
+https://www.quora.com/Are-modern-video-streaming-services-built-on-TCP-or-UDP-Is-TCP-fast-enough-to-support-services-such-as-Netflix
+
+https://stackoverflow.com/questions/19620219/does-youtube-stream-videos-via-tcp
+
 b. 某人压缩过的文本文件 (TCP)
 
 c. 网上银行用户与银行之间的数据传递（TCP）
@@ -37,4 +41,4 @@ TCP。
 - 一直读到连接关闭。https://www.w3.org/Protocols/HTTP/1.0/draft-ietf-http-spec.html#BodyLength
 
 
-6. 
+6.
