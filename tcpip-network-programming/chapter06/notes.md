@@ -22,7 +22,7 @@ https://man7.org/linux/man-pages/man3/sendto.3p.html
 ``` c
 #include <sys/socket.h>
 
-ssize_t recvfrom(int socket, void *buff, size_t nbytes, int flags, struct sockaddr from, socklen_t * addrlen);
+ssize_t recvfrom(int socket, void *buff, size_t nbytes, int flags, struct sockaddr *from, socklen_t * addrlen);
 ```
 
 > The recvfrom() function shall return the length of the message written to the buffer pointed to by the buffer argument. For message-based sockets, such as SOCK_RAW, SOCK_DGRAM, and SOCK_SEQPACKET, the entire message shall be read in a single operation. If a message is too long to fit in the supplied buffer, and MSG_PEEK is not set in the flags argument, the excess bytes shall be discarded.
