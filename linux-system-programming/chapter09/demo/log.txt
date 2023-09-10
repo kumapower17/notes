@@ -1,0 +1,596 @@
+```
+$ gcc malloc.c
+$ ./a.out &
+[1] 8256
+
+ubuntu@ubuntu22:~/workspace/mem$ ps -o comm,vsz,rss -p 8256
+COMMAND            VSZ   RSS
+a.out            68312   968
+ubuntu@ubuntu22:~/workspace/mem$ kill -s USR1 8256
+ubuntu@ubuntu22:~/workspace/mem$ ps -o comm,vsz,rss -p 8256
+COMMAND            VSZ   RSS
+a.out            68312 66676
+```
+
+------
+
+```
+ubuntu@ubuntu22:~/workspace/mem$ gcc malloc_small.c
+ubuntu@ubuntu22:~/workspace/mem$ ./a.out
+brk 0x564a7ea43000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      1696
+Total free bytes (fordblks):           133472
+Topmost releasable bytes (keepcost):   133472
+
+brk 0x564a7f35f000
+
+Total non-mmapped bytes (arena):       9551872
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      9456304
+Total free bytes (fordblks):           95568
+Topmost releasable bytes (keepcost):   95568
+
+brk 0x564a7ea64000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      2736
+Total free bytes (fordblks):           132432
+Topmost releasable bytes (keepcost):   132432
+```
+
+```
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8508
+COMMAND            VSZ   RSS
+a.out             2772   928
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8508
+COMMAND            VSZ   RSS
+a.out            11968 10644
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8508
+COMMAND            VSZ   RSS
+a.out             2772  1588
+```
+
+-----
+
+```
+ubuntu@ubuntu22:~/workspace/mem$ gcc malloc_small_free.c
+ubuntu@ubuntu22:~/workspace/mem$ ./a.out
+brk 0x55b3d3ff9000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      1696
+Total free bytes (fordblks):           133472
+Topmost releasable bytes (keepcost):   133472
+
+brk 0x55b3d4915000
+
+Total non-mmapped bytes (arena):       9551872
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      9456304
+Total free bytes (fordblks):           95568
+Topmost releasable bytes (keepcost):   95568
+
+brk 0x55b3d4915000
+
+Total non-mmapped bytes (arena):       9551872
+# of free chunks (ordblks):            205
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      1895296
+Total free bytes (fordblks):           7656576
+Topmost releasable bytes (keepcost):   123264
+
+brk 0x55b3d401a000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      2736
+Total free bytes (fordblks):           132432
+Topmost releasable bytes (keepcost):   132432
+```
+
+```
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8540
+COMMAND            VSZ   RSS
+a.out             2772   936
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8540
+COMMAND            VSZ   RSS
+a.out            11968 10712
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8540
+COMMAND            VSZ   RSS
+a.out            11968 10712
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8540
+COMMAND            VSZ   RSS
+a.out            11968 10712
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8540
+COMMAND            VSZ   RSS
+a.out             2772  1664
+```
+
+---
+
+https://www.gnu.org/software/libc/manual/html_node/Memory-Allocation-Tunables.html
+
+```
+ubuntu@ubuntu22:~/workspace/mem$ getconf PAGE_SIZE
+4096
+
+ubuntu@ubuntu22:~/workspace/mem$ MALLOC_MMAP_THRESHOLD_=8192 ./a.out
+brk 0x55e634845000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      1696
+Total free bytes (fordblks):           133472
+Topmost releasable bytes (keepcost):   133472
+
+brk 0x55e634866000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           1010
+Bytes in mapped regions (hblkhd):      12410880
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      131984
+Total free bytes (fordblks):           3184
+Topmost releasable bytes (keepcost):   3184
+
+brk 0x55e634866000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            3
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           202
+Bytes in mapped regions (hblkhd):      2482176
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      30432
+Total free bytes (fordblks):           104736
+Topmost releasable bytes (keepcost):   30880
+
+brk 0x55e634866000
+
+Total non-mmapped bytes (arena):       135168
+# of free chunks (ordblks):            1
+# of free fastbin blocks (smblks):     0
+# of mapped regions (hblks):           0
+Bytes in mapped regions (hblkhd):      0
+Max. total allocated space (usmblks):  0
+Free bytes held in fastbins (fsmblks): 0
+Total allocated bytes (uordblks):      2736
+Total free bytes (fordblks):           132432
+Topmost releasable bytes (keepcost):   132432
+
+```
+
+```
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8554
+COMMAND            VSZ   RSS
+a.out             2772   952
+ubuntu@ubuntu22:~$
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8554
+COMMAND            VSZ   RSS
+a.out            14892 13632
+ubuntu@ubuntu22:~$ pmap -x 8554
+8554:   ./a.out
+Address           Kbytes     RSS   Dirty Mode  Mapping
+000055e633803000       4       4       0 r---- a.out
+000055e633804000       4       4       0 r-x-- a.out
+000055e633805000       4       4       0 r---- a.out
+000055e633806000       4       4       4 r---- a.out
+000055e633807000       4       4       4 rw--- a.out
+000055e634845000     132     132     132 rw---   [ anon ]
+00007f56b1b5e000   12108   12104   12104 rw---   [ anon ]
+00007f56b2731000     160     160       0 r---- libc.so.6
+00007f56b2759000    1620     988       0 r-x-- libc.so.6
+00007f56b28ee000     352      64       0 r---- libc.so.6
+00007f56b2946000      16      16      16 r---- libc.so.6
+00007f56b294a000       8       8       8 rw--- libc.so.6
+00007f56b294c000      64      32      32 rw---   [ anon ]
+00007f56b295c000      20      16      16 rw---   [ anon ]
+00007f56b2961000       8       8       0 r---- ld-linux-x86-64.so.2
+00007f56b2963000     168     168       0 r-x-- ld-linux-x86-64.so.2
+00007f56b298d000      44      44       0 r---- ld-linux-x86-64.so.2
+00007f56b2999000       8       8       8 r---- ld-linux-x86-64.so.2
+00007f56b299b000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007ffed59ec000     132      16      16 rw---   [ stack ]
+00007ffed5bfa000      16       0       0 r----   [ anon ]
+00007ffed5bfe000       8       4       0 r-x--   [ anon ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- -------
+total kB           14896   13796   12348
+ubuntu@ubuntu22:~$ pmap -x 8554
+8554:   ./a.out
+Address           Kbytes     RSS   Dirty Mode  Mapping
+000055e633803000       4       4       0 r---- a.out
+000055e633804000       4       4       0 r-x-- a.out
+000055e633805000       4       4       0 r---- a.out
+000055e633806000       4       4       4 r---- a.out
+000055e633807000       4       4       4 rw--- a.out
+000055e634845000     132     132     132 rw---   [ anon ]
+00007f56b1b67000      12      12      12 rw---   [ anon ]
+00007f56b1b76000      12      12      12 rw---   [ anon ]
+00007f56b1b85000      12      12      12 rw---   [ anon ]
+00007f56b1b94000      12      12      12 rw---   [ anon ]
+00007f56b1ba3000      12      12      12 rw---   [ anon ]
+00007f56b1bb2000      12      12      12 rw---   [ anon ]
+00007f56b1bc1000      12      12      12 rw---   [ anon ]
+00007f56b1bd0000      12      12      12 rw---   [ anon ]
+00007f56b1bdf000      12      12      12 rw---   [ anon ]
+00007f56b1bee000      12      12      12 rw---   [ anon ]
+00007f56b1bfd000      12      12      12 rw---   [ anon ]
+00007f56b1c0c000      12      12      12 rw---   [ anon ]
+00007f56b1c1b000      12      12      12 rw---   [ anon ]
+00007f56b1c2a000      12      12      12 rw---   [ anon ]
+00007f56b1c39000      12      12      12 rw---   [ anon ]
+00007f56b1c48000      12      12      12 rw---   [ anon ]
+00007f56b1c57000      12      12      12 rw---   [ anon ]
+00007f56b1c66000      12      12      12 rw---   [ anon ]
+00007f56b1c75000      12      12      12 rw---   [ anon ]
+00007f56b1c84000      12      12      12 rw---   [ anon ]
+00007f56b1c93000      12      12      12 rw---   [ anon ]
+00007f56b1ca2000      12      12      12 rw---   [ anon ]
+00007f56b1cb1000      12      12      12 rw---   [ anon ]
+00007f56b1cc0000      12      12      12 rw---   [ anon ]
+00007f56b1ccf000      12      12      12 rw---   [ anon ]
+00007f56b1cde000      12      12      12 rw---   [ anon ]
+00007f56b1ced000      12      12      12 rw---   [ anon ]
+00007f56b1cfc000      12      12      12 rw---   [ anon ]
+00007f56b1d0b000      12      12      12 rw---   [ anon ]
+00007f56b1d1a000      12      12      12 rw---   [ anon ]
+00007f56b1d29000      12      12      12 rw---   [ anon ]
+00007f56b1d38000      12      12      12 rw---   [ anon ]
+00007f56b1d47000      12      12      12 rw---   [ anon ]
+00007f56b1d56000      12      12      12 rw---   [ anon ]
+00007f56b1d65000      12      12      12 rw---   [ anon ]
+00007f56b1d74000      12      12      12 rw---   [ anon ]
+00007f56b1d83000      12      12      12 rw---   [ anon ]
+00007f56b1d92000      12      12      12 rw---   [ anon ]
+00007f56b1da1000      12      12      12 rw---   [ anon ]
+00007f56b1db0000      12      12      12 rw---   [ anon ]
+00007f56b1dbf000      12      12      12 rw---   [ anon ]
+00007f56b1dce000      12      12      12 rw---   [ anon ]
+00007f56b1ddd000      12      12      12 rw---   [ anon ]
+00007f56b1dec000      12      12      12 rw---   [ anon ]
+00007f56b1dfb000      12      12      12 rw---   [ anon ]
+00007f56b1e0a000      12      12      12 rw---   [ anon ]
+00007f56b1e19000      12      12      12 rw---   [ anon ]
+00007f56b1e28000      12      12      12 rw---   [ anon ]
+00007f56b1e37000      12      12      12 rw---   [ anon ]
+00007f56b1e46000      12      12      12 rw---   [ anon ]
+00007f56b1e55000      12      12      12 rw---   [ anon ]
+00007f56b1e64000      12      12      12 rw---   [ anon ]
+00007f56b1e73000      12      12      12 rw---   [ anon ]
+00007f56b1e82000      12      12      12 rw---   [ anon ]
+00007f56b1e91000      12      12      12 rw---   [ anon ]
+00007f56b1ea0000      12      12      12 rw---   [ anon ]
+00007f56b1eaf000      12      12      12 rw---   [ anon ]
+00007f56b1ebe000      12      12      12 rw---   [ anon ]
+00007f56b1ecd000      12      12      12 rw---   [ anon ]
+00007f56b1edc000      12      12      12 rw---   [ anon ]
+00007f56b1eeb000      12      12      12 rw---   [ anon ]
+00007f56b1efa000      12      12      12 rw---   [ anon ]
+00007f56b1f09000      12      12      12 rw---   [ anon ]
+00007f56b1f18000      12      12      12 rw---   [ anon ]
+00007f56b1f27000      12      12      12 rw---   [ anon ]
+00007f56b1f36000      12      12      12 rw---   [ anon ]
+00007f56b1f45000      12      12      12 rw---   [ anon ]
+00007f56b1f54000      12      12      12 rw---   [ anon ]
+00007f56b1f63000      12      12      12 rw---   [ anon ]
+00007f56b1f72000      12      12      12 rw---   [ anon ]
+00007f56b1f81000      12      12      12 rw---   [ anon ]
+00007f56b1f90000      12      12      12 rw---   [ anon ]
+00007f56b1f9f000      12      12      12 rw---   [ anon ]
+00007f56b1fae000      12      12      12 rw---   [ anon ]
+00007f56b1fbd000      12      12      12 rw---   [ anon ]
+00007f56b1fcc000      12      12      12 rw---   [ anon ]
+00007f56b1fdb000      12      12      12 rw---   [ anon ]
+00007f56b1fea000      12      12      12 rw---   [ anon ]
+00007f56b1ff9000      12      12      12 rw---   [ anon ]
+00007f56b2008000      12      12      12 rw---   [ anon ]
+00007f56b2017000      12      12      12 rw---   [ anon ]
+00007f56b2026000      12      12      12 rw---   [ anon ]
+00007f56b2035000      12      12      12 rw---   [ anon ]
+00007f56b2044000      12      12      12 rw---   [ anon ]
+00007f56b2053000      12      12      12 rw---   [ anon ]
+00007f56b2062000      12      12      12 rw---   [ anon ]
+00007f56b2071000      12      12      12 rw---   [ anon ]
+00007f56b2080000      12      12      12 rw---   [ anon ]
+00007f56b208f000      12      12      12 rw---   [ anon ]
+00007f56b209e000      12      12      12 rw---   [ anon ]
+00007f56b20ad000      12      12      12 rw---   [ anon ]
+00007f56b20bc000      12      12      12 rw---   [ anon ]
+00007f56b20cb000      12      12      12 rw---   [ anon ]
+00007f56b20da000      12      12      12 rw---   [ anon ]
+00007f56b20e9000      12      12      12 rw---   [ anon ]
+00007f56b20f8000      12      12      12 rw---   [ anon ]
+00007f56b2107000      12      12      12 rw---   [ anon ]
+00007f56b2116000      12      12      12 rw---   [ anon ]
+00007f56b2125000      12      12      12 rw---   [ anon ]
+00007f56b2134000      12      12      12 rw---   [ anon ]
+00007f56b2143000      12      12      12 rw---   [ anon ]
+00007f56b2152000      12      12      12 rw---   [ anon ]
+00007f56b2161000      12      12      12 rw---   [ anon ]
+00007f56b2170000      12      12      12 rw---   [ anon ]
+00007f56b217f000      12      12      12 rw---   [ anon ]
+00007f56b218e000      12      12      12 rw---   [ anon ]
+00007f56b219d000      12      12      12 rw---   [ anon ]
+00007f56b21ac000      12      12      12 rw---   [ anon ]
+00007f56b21bb000      12      12      12 rw---   [ anon ]
+00007f56b21ca000      12      12      12 rw---   [ anon ]
+00007f56b21d9000      12      12      12 rw---   [ anon ]
+00007f56b21e8000      12      12      12 rw---   [ anon ]
+00007f56b21f7000      12      12      12 rw---   [ anon ]
+00007f56b2206000      12      12      12 rw---   [ anon ]
+00007f56b2215000      12      12      12 rw---   [ anon ]
+00007f56b2224000      12      12      12 rw---   [ anon ]
+00007f56b2233000      12      12      12 rw---   [ anon ]
+00007f56b2242000      12      12      12 rw---   [ anon ]
+00007f56b2251000      12      12      12 rw---   [ anon ]
+00007f56b2260000      12      12      12 rw---   [ anon ]
+00007f56b226f000      12      12      12 rw---   [ anon ]
+00007f56b227e000      12      12      12 rw---   [ anon ]
+00007f56b228d000      12      12      12 rw---   [ anon ]
+00007f56b229c000      12      12      12 rw---   [ anon ]
+00007f56b22ab000      12      12      12 rw---   [ anon ]
+00007f56b22ba000      12      12      12 rw---   [ anon ]
+00007f56b22c9000      12      12      12 rw---   [ anon ]
+00007f56b22d8000      12      12      12 rw---   [ anon ]
+00007f56b22e7000      12      12      12 rw---   [ anon ]
+00007f56b22f6000      12      12      12 rw---   [ anon ]
+00007f56b2305000      12      12      12 rw---   [ anon ]
+00007f56b2314000      12      12      12 rw---   [ anon ]
+00007f56b2323000      12      12      12 rw---   [ anon ]
+00007f56b2332000      12      12      12 rw---   [ anon ]
+00007f56b2341000      12      12      12 rw---   [ anon ]
+00007f56b2350000      12      12      12 rw---   [ anon ]
+00007f56b235f000      12      12      12 rw---   [ anon ]
+00007f56b236e000      12      12      12 rw---   [ anon ]
+00007f56b237d000      12      12      12 rw---   [ anon ]
+00007f56b238c000      12      12      12 rw---   [ anon ]
+00007f56b239b000      12      12      12 rw---   [ anon ]
+00007f56b23aa000      12      12      12 rw---   [ anon ]
+00007f56b23b9000      12      12      12 rw---   [ anon ]
+00007f56b23c8000      12      12      12 rw---   [ anon ]
+00007f56b23d7000      12      12      12 rw---   [ anon ]
+00007f56b23e6000      12      12      12 rw---   [ anon ]
+00007f56b23f5000      12      12      12 rw---   [ anon ]
+00007f56b2404000      12      12      12 rw---   [ anon ]
+00007f56b2413000      12      12      12 rw---   [ anon ]
+00007f56b2422000      12      12      12 rw---   [ anon ]
+00007f56b2431000      12      12      12 rw---   [ anon ]
+00007f56b2440000      12      12      12 rw---   [ anon ]
+00007f56b244f000      12      12      12 rw---   [ anon ]
+00007f56b245e000      12      12      12 rw---   [ anon ]
+00007f56b246d000      12      12      12 rw---   [ anon ]
+00007f56b247c000      12      12      12 rw---   [ anon ]
+00007f56b248b000      12      12      12 rw---   [ anon ]
+00007f56b249a000      12      12      12 rw---   [ anon ]
+00007f56b24a9000      12      12      12 rw---   [ anon ]
+00007f56b24b8000      12      12      12 rw---   [ anon ]
+00007f56b24c7000      12      12      12 rw---   [ anon ]
+00007f56b24d6000      12      12      12 rw---   [ anon ]
+00007f56b24e5000      12      12      12 rw---   [ anon ]
+00007f56b24f4000      12      12      12 rw---   [ anon ]
+00007f56b2503000      12      12      12 rw---   [ anon ]
+00007f56b2512000      12      12      12 rw---   [ anon ]
+00007f56b2521000      12      12      12 rw---   [ anon ]
+00007f56b2530000      12      12      12 rw---   [ anon ]
+00007f56b253f000      12      12      12 rw---   [ anon ]
+00007f56b254e000      12      12      12 rw---   [ anon ]
+00007f56b255d000      12      12      12 rw---   [ anon ]
+00007f56b256c000      12      12      12 rw---   [ anon ]
+00007f56b257b000      12      12      12 rw---   [ anon ]
+00007f56b258a000      12      12      12 rw---   [ anon ]
+00007f56b2599000      12      12      12 rw---   [ anon ]
+00007f56b25a8000      12      12      12 rw---   [ anon ]
+00007f56b25b7000      12      12      12 rw---   [ anon ]
+00007f56b25c6000      12      12      12 rw---   [ anon ]
+00007f56b25d5000      12      12      12 rw---   [ anon ]
+00007f56b25e4000      12      12      12 rw---   [ anon ]
+00007f56b25f3000      12      12      12 rw---   [ anon ]
+00007f56b2602000      12      12      12 rw---   [ anon ]
+00007f56b2611000      12      12      12 rw---   [ anon ]
+00007f56b2620000      12      12      12 rw---   [ anon ]
+00007f56b262f000      12      12      12 rw---   [ anon ]
+00007f56b263e000      12      12      12 rw---   [ anon ]
+00007f56b264d000      12      12      12 rw---   [ anon ]
+00007f56b265c000      12      12      12 rw---   [ anon ]
+00007f56b266b000      12      12      12 rw---   [ anon ]
+00007f56b267a000      12      12      12 rw---   [ anon ]
+00007f56b2689000      12      12      12 rw---   [ anon ]
+00007f56b2698000      12      12      12 rw---   [ anon ]
+00007f56b26a7000      12      12      12 rw---   [ anon ]
+00007f56b26b6000      12      12      12 rw---   [ anon ]
+00007f56b26c5000      12      12      12 rw---   [ anon ]
+00007f56b26d4000      12      12      12 rw---   [ anon ]
+00007f56b26e3000      12      12      12 rw---   [ anon ]
+00007f56b26f2000      12      12      12 rw---   [ anon ]
+00007f56b2701000      12      12      12 rw---   [ anon ]
+00007f56b2710000      12      12      12 rw---   [ anon ]
+00007f56b271f000      12      12      12 rw---   [ anon ]
+00007f56b272e000      12       8       8 rw---   [ anon ]
+00007f56b2731000     160     160       0 r---- libc.so.6
+00007f56b2759000    1620     988       0 r-x-- libc.so.6
+00007f56b28ee000     352      64       0 r---- libc.so.6
+00007f56b2946000      16      16      16 r---- libc.so.6
+00007f56b294a000       8       8       8 rw--- libc.so.6
+00007f56b294c000      64      32      32 rw---   [ anon ]
+00007f56b295f000       8       4       4 rw---   [ anon ]
+00007f56b2961000       8       8       0 r---- ld-linux-x86-64.so.2
+00007f56b2963000     168     168       0 r-x-- ld-linux-x86-64.so.2
+00007f56b298d000      44      44       0 r---- ld-linux-x86-64.so.2
+00007f56b2999000       8       8       8 r---- ld-linux-x86-64.so.2
+00007f56b299b000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007ffed59ec000     132      16      16 rw---   [ stack ]
+00007ffed5bfa000      16       0       0 r----   [ anon ]
+00007ffed5bfe000       8       4       0 r-x--   [ anon ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- -------
+total kB            5200    4100    2652
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8554
+COMMAND            VSZ   RSS
+a.out             5196  4100
+ubuntu@ubuntu22:~$
+ubuntu@ubuntu22:~$ ps -o comm,vsz,rss -p 8554
+COMMAND            VSZ   RSS
+a.out             2772  1676
+ubuntu@ubuntu22:~$ pmap -x 8554
+8554:   ./a.out
+Address           Kbytes     RSS   Dirty Mode  Mapping
+000055e633803000       4       4       0 r---- a.out
+000055e633804000       4       4       0 r-x-- a.out
+000055e633805000       4       4       0 r---- a.out
+000055e633806000       4       4       4 r---- a.out
+000055e633807000       4       4       4 rw--- a.out
+000055e634845000     132     132     132 rw---   [ anon ]
+00007f56b272e000      12       8       8 rw---   [ anon ]
+00007f56b2731000     160     160       0 r---- libc.so.6
+00007f56b2759000    1620     988       0 r-x-- libc.so.6
+00007f56b28ee000     352      64       0 r---- libc.so.6
+00007f56b2946000      16      16      16 r---- libc.so.6
+00007f56b294a000       8       8       8 rw--- libc.so.6
+00007f56b294c000      52      20      20 rw---   [ anon ]
+00007f56b295f000       8       4       4 rw---   [ anon ]
+00007f56b2961000       8       8       0 r---- ld-linux-x86-64.so.2
+00007f56b2963000     168     168       0 r-x-- ld-linux-x86-64.so.2
+00007f56b298d000      44      44       0 r---- ld-linux-x86-64.so.2
+00007f56b2999000       8       8       8 r---- ld-linux-x86-64.so.2
+00007f56b299b000       8       8       8 rw--- ld-linux-x86-64.so.2
+00007ffed59ec000     132      16      16 rw---   [ stack ]
+00007ffed5bfa000      16       0       0 r----   [ anon ]
+00007ffed5bfe000       8       4       0 r-x--   [ anon ]
+ffffffffff600000       4       0       0 --x--   [ anon ]
+---------------- ------- ------- -------
+total kB            2776    1676     228
+ubuntu@ubuntu22:~$
+```
+
+```
+$ sudo strace -e brk,mmap,munmap -p 8554 2>&1 | cut -d '(' -f 1 | uniq -c
+      1 strace: Process 8554 attached
+   1010 mmap
+   1010 munmap
+      1 +++ exited with 0 +++
+```
+
+---
+
+```
+[  809.641895] a.out invoked oom-killer: gfp_mask=0x1100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+[  809.642006] CPU: 4 PID: 3652 Comm: a.out Tainted: G           O    T 5.15.49-linuxkit-pr #1
+[  809.642099] Call Trace:
+[  809.642127]  <TASK>
+[  809.642156]  dump_stack_lvl+0x46/0x5a
+[  809.642210]  dump_header+0x47/0x1e7
+[  809.642254]  oom_kill_process+0x80/0xfb
+[  809.642288]  out_of_memory+0x25f/0x28a
+[  809.642320]  mem_cgroup_out_of_memory+0x7e/0xb3
+[  809.642383]  try_charge_memcg+0x3f1/0x510
+[  809.642445]  charge_memcg+0x2a/0x67
+[  809.642481]  __mem_cgroup_charge+0x2a/0x3f
+[  809.642513]  __add_to_page_cache_locked+0xb0/0x291
+[  809.642565]  ? page_memcg.isra.0+0x12/0x12
+[  809.642619]  add_to_page_cache_lru+0x56/0xbb
+[  809.642713]  pagecache_get_page+0x1a6/0x1f9
+[  809.642786]  filemap_fault+0x2c2/0x49e
+[  809.642831]  __do_fault+0x4b/0x69
+[  809.642885]  __handle_mm_fault+0x757/0xa03
+[  809.642950]  handle_mm_fault+0x125/0x1eb
+[  809.642985]  do_user_addr_fault+0x354/0x512
+[  809.643082]  exc_page_fault+0x10e/0x12d
+[  809.643151]  ? asm_exc_page_fault+0x8/0x30
+[  809.643193]  asm_exc_page_fault+0x1e/0x30
+[  809.643250] RIP: 0033:0x7fef8bc3304a
+[  809.643297] Code: Unable to access opcode bytes at RIP 0x7fef8bc33020.
+[  809.643352] RSP: 002b:00007ffdf9a1d388 EFLAGS: 00010206
+[  809.643402] RAX: 0000000000000001 RBX: 00007ffdf9a1d558 RCX: 00000000036da010
+[  809.643487] RDX: 00007fef87adc010 RSI: 0000000000000001 RDI: 00007fef88402000
+[  809.643583] RBP: 00007ffdf9a1d440 R08: 00000000ffffffff R09: 0000000000000000
+[  809.643659] R10: 00007fef8baf6fe0 R11: 00007fef8bc32f80 R12: 0000000000000000
+[  809.643743] R13: 00007ffdf9a1d568 R14: 0000000000403df0 R15: 00007fef8bcfb020
+[  809.643839]  </TASK>
+[  809.643978] memory: usage 6144kB, limit 6144kB, failcnt 29899
+[  809.644183] swap: usage 6144kB, limit 6144kB, failcnt 152
+[  809.644255] Memory cgroup stats for /docker/ad6c46b550523f9a7b6d6796621f9e7ccaa3eaf87a044eaa6c9d21f0a52ce21f:
+[  809.644380] anon 4771840
+[  809.644380] file 0
+[  809.644380] kernel_stack 32768
+[  809.644380] pagetables 126976
+[  809.644380] percpu 0
+[  809.644380] sock 0
+[  809.644380] shmem 0
+[  809.644380] file_mapped 0
+[  809.644380] file_dirty 0
+[  809.644380] file_writeback 0
+[  809.644380] swapcached 950272
+[  809.644380] anon_thp 0
+[  809.644380] file_thp 0
+[  809.644380] shmem_thp 0
+[  809.644380] inactive_anon 4833280
+[  809.644380] active_anon 811008
+[  809.644380] inactive_file 0
+[  809.644380] active_file 0
+[  809.644380] unevictable 0
+[  809.644380] slab_reclaimable 138520
+[  809.644380] slab_unreclaimable 123744
+[  809.644380] slab 262264
+[  809.644380] workingset_refault_anon 3444
+[  809.644380] workingset_refault_file 73492
+[  809.644380] workingset_activate_anon 781
+[  809.644380] workingset_activate_file 17359
+[  809.644380] workingset_restore_anon 256
+[  809.644380] workingset_restore_file 10909
+[  809.645602] Tasks state (memory values in pages):
+[  809.645695] [  pid  ]   uid  tgid total_vm      rss pgtables_bytes swapents oom_score_adj name
+[  809.645816] [   1981]     0  1981      621        0    45056       25             0 sleep
+[  809.645978] [   2011]     0  2011     1047       23    49152      116             0 bash
+[  809.646154] [   3652]     0  3652    17000     1075    65536     1238             0 a.out
+[  809.646299] oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=ad6c46b550523f9a7b6d6796621f9e7ccaa3eaf87a044eaa6c9d21f0a52ce21f,mems_allowed=0,oom_memcg=/docker/ad6c46b550523f9a7b6d6796621f9e7ccaa3eaf87a044eaa6c9d21f0a52ce21f,task_memcg=/docker/ad6c46b550523f9a7b6d6796621f9e7ccaa3eaf87a044eaa6c9d21f0a52ce21f,task=a.out,pid=3652,uid=0
+[  809.646715] Memory cgroup out of memory: Killed process 3652 (a.out) total-vm:68000kB, anon-rss:4300kB, file-rss:0kB, shmem-rss:0kB, UID:0 pgtables:64kB oom_score_adj:0
+```
