@@ -245,11 +245,9 @@ unsigned int alarm (unsigned int seconds);
 #define ITIMER_VIRTUAL   1
 #define ITIMER_PROF      2
 
-int
-getitimer(int which, struct itimerval *value);
+int getitimer(int which, struct itimerval *value);
 
-int
-setitimer(int which, const struct itimerval *restrict value, struct itimerval *restrict ovalue);
+int setitimer(int which, const struct itimerval *restrict value, struct itimerval *restrict ovalue);
 ```
 
 > Some Unix systems implement `sleep()` and `usleep()` via SIGALRM. `alarm()` and `setitimer()` also use SIGALRM. Therefore, programmers must be careful not to overlap calls to these functions; the results are undefined. For the purpose of brief waits, programmers should use `nanosleep()`, which POSIX dictates will not use signals. For timers, programmers should use `setitimer()` or `alarm()`.
@@ -289,9 +287,7 @@ https://github.com/golang/go/issues/25471
 
 int timerfd_create(int clockid, int flags);
 
-int timerfd_settime(int fd, int flags,
-					const struct itimerspec *new_value,
-					struct itimerspec *_Nullable old_value);
+int timerfd_settime(int fd, int flags, const struct itimerspec *new_value, struct itimerspec *_Nullable old_value);
 int timerfd_gettime(int fd, struct itimerspec *curr_value);
 ```
 
