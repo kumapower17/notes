@@ -187,6 +187,8 @@ https://wsgzao.github.io/post/logrotate/
 
 https://docs.kernel.org/admin-guide/sysctl/vm.html#dirty-expire-centisecs
 
+## Synchronized I/O
+
 ### fsync and fdatasync()
 
 Linux also provides the system call fdatasync():
@@ -222,3 +224,28 @@ https://utcc.utoronto.ca/~cks/space/blog/unix/TheLegendOfSync
 > Normally, applications that need guarantees that write operations have hit the disk use fsync() or fdatasync(). These tend to incur less cost than O_SYNC, as they can be called less often (i.e., only after certain critical operations have completed).
 
 > POSIX defines two other synchronized-I/O-related open() flags: O_DSYNC and O_RSYNC. On Linux, these flags are defined to be synonymous with O_SYNC; they provide the same behavior.
+
+
+## Direct I/O
+
+> The Linux kernel, like any modern operating system kernel, implements a complex layer of caching, buffering, and I/O management between devices and applications. A high-performance application may wish to bypass this layer of complexity and perform its own I/O management.
+
+> Providing the O_DIRECT flag to open() instructs the kernel to minimize the presence of I/O management. When this flag is provided, I/O will initiate directly from user-space buffers to the device, bypassing the page cache. All I/O will be synchronous; operations will not return until completed.
+
+## Closing File
+
+> Note that closing a file has no bearing on when the file is flushed to disk. To ensure that a file is committed to disk before closing it, an application needs to make use of one of the synchronization options discussed earlier in “Synchronized I/O”
+
+## poll() Versus select()
+
+Although they perform the same basic job, the poll() system call is superior to select() for a handful of reasons:
+- poll() does not require that the user calculate and pass in as a parameter the value of the highest-numbered file descriptor plus one.
+- poll() is more efficient for large-valued file descriptors. Imagine watching a single file descriptor with the value 900 via select()—the kernel would have to check each bit of each passed-in set, up to the 900th bit.
+- select()’s file descriptor sets are statically sized, introducing a trade-off: they are small, limiting the maximum file descriptor that select() can watch, or they are inefficient. Operations on large bitmasks are not efficient, especially if it is not known whether they are sparsely populated. With poll(), one can create an array of exactly the right size.
+- With select(), the file descriptor sets are reconstructed on return, so each subsequent call must reinitialize them. The poll() system call separates the input (events field) from the output (revents field), allowing the array to be reused without change.
+- The timeout parameter to select() is undefined on return. Portable code needs to reinitialize it. This is not an issue with pselect(), however.
+
+## Kernel Internals
+
+https://docs.kernel.org/admin-guide/sysctl/vm.html#swappiness
+
